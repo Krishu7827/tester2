@@ -16,7 +16,7 @@ let count = 0
         }
     }
     if(count == 2){
-        return false
+        return true
     }else{
         return false
     }
