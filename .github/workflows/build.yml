@@ -1,7 +1,7 @@
 on: [push]
 jobs:
-  check-bats-version:
-    runs-on: window-latest
+  firstJob:
+    runs-on: windows-latest
     steps:
       - run: npm -version
       - uses: actions/checkout@v3
