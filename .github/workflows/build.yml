@@ -1,8 +1,9 @@
 on: [push]
 jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
+  firstJob:
+    runs-on: windows-latest
     steps:
       - run: npm -version
       - uses: actions/checkout@v3
-      
+      - run: npm i jest
+      - run: npm run test

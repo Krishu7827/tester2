@@ -16,7 +16,7 @@ let count = 0
         }
     }
     if(count == 2){
-        return false
+        return true
     }else{
         return false
     }
@@ -46,6 +46,22 @@ function NumberOfWays(N){
 
 }
 
+function factorial(N){
+   
+if(N==0 || N==1){
+    return 1
+}
+
+return N*factorial(N-1)
+
+}
+
+
+function squareroot(Number){
+      // console.log(Math.sqrt(Number))
+    return Math.sqrt(Number)
+
+}
 
 
 
@@ -56,4 +72,5 @@ function NumberOfWays(N){
 
 
 
-module.exports = {sum,multiply,checkprime,Sort,NumberOfWays}
+
+module.exports = {sum,multiply,checkprime,Sort,NumberOfWays,factorial,squareroot}

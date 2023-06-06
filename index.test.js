@@ -1,4 +1,4 @@
-let {sum,multiply,checkprime,Sort,NumberOfWays} = require("./index")
+let {sum,multiply,checkprime,Sort,NumberOfWays,factorial,squareroot} = require("./index")
 //let Jest = require('jest')
 global.score = 1
 describe('add',()=>{
@@ -35,6 +35,26 @@ test('Number of ways problems',()=>{
     expect(NumberOfWays(7)).toEqual(44)
     global.score+=2
 })
+
+test('factorial of Number',()=>{
+     
+    expect(factorial(2)).toEqual(2)
+    expect(factorial(3)).toEqual(6)
+    expect(factorial(4)).toEqual(24)
+   
+    global.score+=1
+})
+
+
+test("square root of Number",()=>{
+    expect(squareroot(4)).toBe(2)
+    expect(squareroot(16)).toBe(4)
+    expect(squareroot(25)).toBe(5)
+    global.score+=1
+})
+
+
+
 
 
 
