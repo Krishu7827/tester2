@@ -1,65 +1,63 @@
-let {sum,multiply,checkprime,Sort,NumberOfWays,factorial,squareroot} = require("./index")
-//let Jest = require('jest')
-global.score = 1
-describe('add',()=>{
-test('add 1 + 2 to equal 2',()=>{
-    expect(sum(1,2)).toBe(3)
-    global.score+=1
-})
-})
+const { connectToDatabase, mongoose } = require("./index");
 
-describe('multiply',()=>{
-test('multiply number',()=>{
-    expect(multiply(2,3)).toBe(6)
-    global.score+=1
-})
+let buyer = mongoose.Schema({
+    _id:Number,
+    name:String,
+    email:String,
+    address:Object
 })
 
-test('check 5 is prime number or not',()=>{
-    expect(checkprime(5)).toBe(true)
-    global.score+=1
-})
+let buyerModel = mongoose.model("buyer",buyer)
 
 
-test('checking arr is sorted or not',()=>{
-
-    expect(Sort([2,3,5,6,7,3,1])).toEqual([1,2,3,3,5,6,7])
-    expect(Sort([5,4,3,2,1])).toEqual([1,2,3,4,5])
-    global.score+=1
-})
+    
 
 
-test('Number of ways problems',()=>{
-    expect(NumberOfWays(4)).toEqual(7)
-    expect(NumberOfWays(3)).toEqual(4)
-    expect(NumberOfWays(7)).toEqual(44)
-    global.score+=2
-})
 
-test('factorial of Number',()=>{
-     
-    expect(factorial(2)).toEqual(2)
-    expect(factorial(3)).toEqual(6)
-    expect(factorial(4)).toEqual(24)
+test("mongodbconnection", async () => {
+  const connection = await connectToDatabase();
+ // console.log(connection);
+
+  expect(connection).toBeDefined();
+  expect(mongoose.connection.readyState).toBe(1); // Ensure the connection is open (1)
+});
+
+
+test("test 1",async()=>{
+//let docu = await buyerModel.find()
+   let docu = await buyerModel.aggregate([ { $lookup: { from: "orders", localField: "_id", foreignField: "customer_id", as: "orders" } },{$match:{orders:{$ne:[]}}},{$project:{_id:0,name:1}}]).exec()
+   console.log(docu)
+   let expectdocu = [
+    { name: 'John Smith' },
+    { name: 'Alice Johnson' },
+    { name: 'Michael Brown' },
+    { name: 'Emma Davis' },
+    { name: 'Daniel Wilson' }
+  ]
+
+  expect(docu).toEqual(expectdocu)
    
-    global.score+=1
 })
 
+test("test 2",async()=>{
+    //let docu = await buyerModel.find().exec()
+      let docu = await buyerModel.aggregate([ { $lookup: { from: "orders", localField: "_id", foreignField: "customer_id", as: "orders" } },{$match:{orders:{$ne:[]}}},{$project:{_id:0,name:1}}]).exec()
+      // console.log(docu)
+       let expectdocu = [
+        { name: 'John Smith' },
+        { name: 'Alice Johnson' },
+        { name: 'Michael Brown' },
+        { name: 'Emma Davis' },
+        { name: 'Daniel Wilson' }
+      ]
+      expect(docu).toEqual(expectdocu)
+       
+    })
 
-test("square root of Number",()=>{
-    expect(squareroot(4)).toBe(2)
-    expect(squareroot(16)).toBe(4)
-    expect(squareroot(25)).toBe(5)
-    global.score+=1
-})
 
 
 
-
-
-
-
-
-afterAll(()=>{
-    console.log("Final Score is",global.score)
-})
+afterAll(async () => {
+    // Close the Mongoose connection after all tests are complete
+    await mongoose.connection.close();
+  });
